@@ -3,6 +3,8 @@ import { useState, useEffect, useRef} from "react";
 import Card from "@/components/card";
 import fetchBlog from "./api/extract_link";
 import fetchLinks from "./api/links_Fetch";
+import HoverCard from "@/components/HoverCard";
+
 
 export default function Home() {
   const[siteLinks,setSiteLinks] = useState([]);
@@ -89,7 +91,7 @@ export default function Home() {
       <div className="row">
       {cardData.length > 0 ? (
           cardData.map((card, index) => (
-            <Card
+            <HoverCard
               key={index}  
               src={card.src}
               title={card.title}
