@@ -7,6 +7,9 @@ import fetchLinks from "./api/links_Fetch";
 export default function Home() {
   const[siteLinks,setSiteLinks] = useState([]);
   const[cardData,setCardData] = useState([]);
+  const loadedLinks = useRef(new Set());
+  const loadref = useRef(false);
+  
   // const[loading,setLoading] = useState(false); 
 
   // const blogurl = "https://medium.com/@loseheart110/pros-and-cons-of-artificial-intelligence-b8b9d01de85d";
@@ -33,17 +36,21 @@ export default function Home() {
       const allcards = [];
       for(let i = 0; i < siteLinks.length; i++){
         const link = siteLinks[i];
+        if(loadedLinks.current.has(link)) continue;
+
+        loadedLinks.current.add(link);
         const data = await fetchBlog(link);
         if(data){
-          allcards.push({
+            const newcard = {
             src : data.image_url,
             title : data.title,
             content: data.content,
             link: link,
-          })
+          };
+          console.log(newcard);
+          setCardData(prevcards=> [...prevcards,newcard]);
         }
       }
-      setCardData(prevcards => [...prevcards,...allcards]);
     };
 
     loadcard();
@@ -51,7 +58,6 @@ export default function Home() {
 
   // use ref is used so that the values can be mutable here can track the loading and the scrolling of the page.
   // using the state variables causes the loading where as the ref takes out the problem of re-rendering.
-  const loadref = useRef(false);
 
   // this function handles the scrolling of the page of the page is scrolled then the function loadmore is called this fetches the new links agein .
   useEffect(() => {
@@ -118,7 +124,7 @@ export default function Home() {
 // Current limitations || problems
 
 /*  The cards are loaded then stored in list  all are fetched at once and then they are displayed at one which is time taking
-      i. To implement the continuous loading by changin loadcard function to render each card when made
+      i. To implement the continuous loading by changin loadcard function to render each card when made --- (done)
     Currently the code takes only one paramater for fetching
       i. To ensure the code accepts the multiple arguments or a list and fetch the articles and links.
     Current the links fetched are above for A paritcular topic
