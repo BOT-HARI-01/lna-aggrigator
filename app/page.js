@@ -3,7 +3,6 @@ import { useState, useEffect, useRef} from "react";
 import Card from "@/components/card";
 import fetchBlog from "./api/extract_link";
 import fetchLinks from "./api/links_Fetch";
-import { getHash } from "next/dist/server/image-optimizer";
 
 export default function Home() {
   const[siteLinks,setSiteLinks] = useState([]);
@@ -11,6 +10,7 @@ export default function Home() {
   // const[loading,setLoading] = useState(false); 
 
   // const blogurl = "https://medium.com/@loseheart110/pros-and-cons-of-artificial-intelligence-b8b9d01de85d";
+  
   // Function used to initially fetch the data regarding to the user initially when the page is loaded.
   useEffect(() => {
     const loadLinks = async () => {
@@ -118,5 +118,19 @@ export default function Home() {
 // Current limitations || problems
 
 /*  The cards are loaded then stored in list  all are fetched at once and then they are displayed at one which is time taking
-      i. To implement the continuous loading by changin loadcard function to render each card when made.
+      i. To implement the continuous loading by changin loadcard function to render each card when made
+    Currently the code takes only one paramater for fetching
+      i. To ensure the code accepts the multiple arguments or a list and fetch the articles and links.
+    Current the links fetched are above for A paritcular topic
+      i. reduce the links fetching a particular topic more than 5 links from each site and ensure all are unique and all are of  different topics (different tags that are use for fetching)
+    MAIN:
+      The interface should manitain a local storage that enables the veri of uses perv login and directly show loads the preferences ELSE 
+        0. If use has any pref just loggin or if no pref show default refs (make some default refs now).
+        i. if the user is old and logged in directly load page
+        ii. Use is old has pref in local storage load page
+      
+      * There is no tags displayed to store the prefs
+          i. show a page to select the refs by the user and store them.
+            implement local storage -- db later we will see it.
+            
 */
