@@ -1,101 +1,122 @@
-import Image from "next/image";
+'use client'
+import { useState, useEffect, useRef} from "react";
+import Card from "@/components/card";
+import fetchBlog from "./api/extract_link";
+import fetchLinks from "./api/links_Fetch";
+import { getHash } from "next/dist/server/image-optimizer";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const[siteLinks,setSiteLinks] = useState([]);
+  const[cardData,setCardData] = useState([]);
+  // const[loading,setLoading] = useState(false); 
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  // const blogurl = "https://medium.com/@loseheart110/pros-and-cons-of-artificial-intelligence-b8b9d01de85d";
+  // Function used to initially fetch the data regarding to the user initially when the page is loaded.
+  useEffect(() => {
+    const loadLinks = async () => {
+      const data = await fetchLinks('programming');
+      
+      console.log("fetchLinks response:", data);
+    
+        setSiteLinks(data);
+    };  
+
+    loadLinks();
+  }, [])
+
+  // After fetching the links the cards has to be loaded so the function iterates through the sitelinks and calls the fetchblog
+  // which extracts the links and return link, image, title, content
+  // A list is made to store all teh data of the cards that are extracted and use later to prepare the card for display
+  useEffect(() => {
+    // if (siteLinks.length === 0) return;
+    const loadcard = async () => {
+      const allcards = [];
+      for(let i = 0; i < siteLinks.length; i++){
+        const link = siteLinks[i];
+        const data = await fetchBlog(link);
+        if(data){
+          allcards.push({
+            src : data.image_url,
+            title : data.title,
+            content: data.content,
+            link: link,
+          })
+        }
+      }
+      setCardData(prevcards => [...prevcards,...allcards]);
+    };
+
+    loadcard();
+  },[siteLinks]);//iterates throught the end of site links
+
+  // use ref is used so that the values can be mutable here can track the loading and the scrolling of the page.
+  // using the state variables causes the loading where as the ref takes out the problem of re-rendering.
+  const loadref = useRef(false);
+
+  // this function handles the scrolling of the page of the page is scrolled then the function loadmore is called this fetches the new links agein .
+  useEffect(() => {
+    const handleScroll = () => {
+      if (loadref.current) return; 
+      //
+      const bottom = document.documentElement.scrollHeight -  document.documentElement.scrollTop - window.innerHeight < 1 ;
+      if (bottom) {
+        loadref.current = true; 
+        const loadMore = async () => {
+          const newLinks = await fetchLinks('python'); 
+          setSiteLinks(prevlinks =>{
+            const unqlinks = newLinks.filter(links => !prevlinks.includes(links));
+            return [...prevlinks,...unqlinks];
+          }); 
+          loadref.current = false; 
+        };
+        loadMore();
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return (
+    <div>
+      <div className="row">
+      {cardData.length > 0 ? (
+          cardData.map((card, index) => (
+            <Card
+              key={index}  
+              src={card.src}
+              title={card.title}
+              content={card.content}
+              link={card.link}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+          ))
+        ) : (
+          <p>Loading...</p> 
+        )}
+        {/* {cardData ? (
+          <Card
+            src={cardData.src}
+            title={cardData.title}
+            content={cardData.content}
+            link={cardData.link}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        ) : (
+          <p>Loading...</p> 
+        )} */}
+        {/* <Card
+          src ="https://miro.medium.com/v2/resize:fit:640/format:webp/1*YUIhHmZyuEn92w2azqpfXg.jpeg"
+          title={'eewewe'}
+          content={'askjdjb asgdk'}
+          link={"https://medium.com/@loseheart110/pros-and-cons-of-artificial-intelligence-b8b9d01de85d"}
+        /> */}
+      </div>
     </div>
   );
 }
+
+// Current limitations || problems
+
+/*  The cards are loaded then stored in list  all are fetched at once and then they are displayed at one which is time taking
+      i. To implement the continuous loading by changin loadcard function to render each card when made.
+*/

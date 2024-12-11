@@ -1,0 +1,56 @@
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #222831;
+    border-right: 1px solid #31363F;
+    color: #ecf0f1;
+    padding: 20px;
+    position: fixed;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .navList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .navList li {
+    margin: 15px 0;
+  }
+  
+  .navList li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+  }
+  
+  .navList li a:hover {
+    color: #3498db;
+  }
+
+  .toggleButton{
+    display: none;
+    position: absolute;
+    top: 20px;
+    left:10px;
+    background-color: transparent;
+    border: none;
+    color: #ecf0f1;
+    font-size: 20px;
+    cursor:pointer;
+  }
+  @media (max-width: 768px) {
+    .toggleButton {
+        display: block; 
+  }
+  .SidebarClosed {
+    width: 50px; 
+}
+}

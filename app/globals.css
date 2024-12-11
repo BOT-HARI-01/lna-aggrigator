@@ -1,21 +1,32 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+body{
+    margin: 0;
+    background-color: #222831;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.card{
+    /* background-color: #FFF6E0; */
+    height: 400px;
+    /* F5F5F5 */
+}
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* space between cards */
+    margin-left: 0; /* optional, depending on your layout */
+    justify-content: space-between; /* optional */
+    width: 100%; /* make sure it uses full width */
+}
+.card-body{
+    height: auto;
+}
+.card-img-top {
+    width: 100%; 
+    /* height: auto;*/
+    height: 250px;
+    border-radius: 2%;
   }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
+  
