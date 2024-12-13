@@ -17,8 +17,7 @@ const HoverCard = ({ src, title, content, link }) => {
     }
   };
 
-
-  const openModal = () => {
+const openModal = () => {
     setIsModalOpen(true);
   };
 

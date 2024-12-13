@@ -1,4 +1,4 @@
-.sidebar {
+/* /* .sidebar {
     width: 250px;
     height: 100vh;
     background-color: #222831;
@@ -40,17 +40,107 @@
     position: absolute;
     top: 20px;
     left:10px;
+    right: 1px; 
     background-color: transparent;
     border: none;
     color: #ecf0f1;
     font-size: 20px;
     cursor:pointer;
   }
+  .toggleButton {
+      display: block; 
+}
   @media (max-width: 768px) {
-    .toggleButton {
-        display: block; 
-  }
   .SidebarClosed {
     width: 50px; 
 }
+}*/ 
+
+.sidebar {
+  
+  width: 250px;
+  height: 100vh;
+  background-color: #222831;
+  border-right: 1px solid #31363F;
+  color: #ecf0f1;
+  transition: width 0.3s ease-in-out;
+  overflow: hidden;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarClosed {
+  width: 80px; /* Adjust based on icon size */
+  height: 100vh;
+  background-color: #222831;
+  border-right: 1px solid #31363F;
+  color: #ecf0f1;
+  transition: width 0.3s;
+  overflow: hidden;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+}
+
+.navList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navList li {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.navList li a {
+  text-decoration: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.navList li i {
+  font-size: 20px;
+  margin-right: 15px; 
+}
+
+.sidebarClosed .navList li i {
+  margin: 0; 
+}
+
+.linkText {
+  display: inline;
+}
+
+.sidebarClosed .linkText {
+  display: none;
+}
+
+/* Toggle Button */
+.toggleButton {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin: 10px;
+  font-size: 20px;
+}
+
+@media (max-width: 768px) {
+  .sidebarClosed {
+    width: 80px; 
+    height: 100vh;
+    background-color: #222831;
+    border-right: 1px solid #31363F;
+    color: #ecf0f1;
+    transition: width 0.3s;
+    overflow: hidden;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+  }
 }
