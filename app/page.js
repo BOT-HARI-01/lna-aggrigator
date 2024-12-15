@@ -4,6 +4,8 @@ import Card from "@/components/card";
 import fetchBlog from "./api/extract_link";
 import fetchLinks from "./api/links_Fetch";
 import HoverCard from "@/components/HoverCard";
+import { ParentComponent } from "@/components/sidebar_resize";
+// import { ParentComponent } from "@/components/sidebar_resize";
 
 
 export default function Home() {

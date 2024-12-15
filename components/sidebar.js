@@ -3,27 +3,30 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Styles from "@/components/sidebar.module.css";
 
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true);
-  const [isMobile,setIsMobile] = useState(false);
-  useEffect(()=>{
-    const resize = () =>{
-      if(window.innerWidth <= 768){
-        setIsMobile(true);
-        setIsOpen(false);
-      }else{
-        setIsMobile(false);
-        setIsOpen(true);
-      }  
-    }
-    resize();
-    window.addEventListener("resize",resize);
-    return() =>window.removeEventListener("resize",resize);
-  },[]);
+const Sidebar = ({isOpen,setIsOpen}) => {
+  console.log("isOpen val at sidebar.js",isOpen);
+  // const [isOpen, setIsOpen] = useState(true);
+  // const [isMobile,setIsMobile] = useState(false);
+  // useEffect(()=>{
+  //   const resize = () =>{
+  //     if (typeof setIsOpen === 'function') {
+  //       if(window.innerWidth <= 768){
+  //         // setIsMobile(true);
+  //         setIsOpen(false);
+  //       }else{
+  //         // setIsMobile(false);
+  //         setIsOpen(true);
+  //       }
+  //     }
+  //   }
+  //   resize();
+  //   window.addEventListener("resize",resize);
+  //   return() =>window.removeEventListener("resize",resize);
+  // },[]);
   return (
     <div className={isOpen ? Styles.sidebar : Styles.sidebarClosed}>
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setIsOpen(prev => !prev)}
         className={Styles.toggleButton}
       >
         {isOpen ? "<" : ">"}

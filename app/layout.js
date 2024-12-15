@@ -3,6 +3,8 @@ import 'font-awesome/css/font-awesome.min.css';
 import '@/components/sidebar.module.css';
 import Sidebar from "@/components/sidebar";
 import "./globals.css";
+import { MainContent } from '@/components/mainContent';
+import { ParentComponent } from '@/components/sidebar_resize';
 
 export const metadata = {
 title: "Create Next App",
@@ -16,10 +18,10 @@ return (
 
     <body>
       <div style={{display:"flex"}}>      
-        <Sidebar/>    
-        <main style={{ marginLeft: "250px", padding: "20px", flexGrow: 1 }}>
+        <ParentComponent/>
+        <MainContent>
           {children}
-        </main>
+        </MainContent>
       </div>
     </body>
   </html>

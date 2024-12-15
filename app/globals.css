@@ -6,27 +6,50 @@
 body{
     margin: 0;
     background-color: #222831;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 .card{
     /* background-color: #FFF6E0; */
     height: 400px;
     /* F5F5F5 */
 }
-.row {
+/* .row {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px; /* space between cards */
-    margin-left: 0; /* optional, depending on your layout */
-    justify-content: space-between; /* optional */
-    width: 100%; /* make sure it uses full width */
-}
+    gap: 10px; 
+    margin-left: 0;
+    justify-content: space-between; 
+    width: 100%; 
+} */
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Ensures 3 columns */
+    gap: 20px;
+    padding: 20px;
+    width: 100%; 
+    box-sizing: border-box;
+  }
 .card-body{
     height: auto;
 }
+
 .card-img-top {
     width: 100%; 
     /* height: auto;*/
     height: 250px;
     border-radius: 2%;
 }
+
+@media (max-width: 1024px) {
+    .row {
+      grid-template-columns: repeat(2, 1fr); /* 2 cards per row on medium screens */
+    }
+  }
   
+  @media (max-width: 768px) {
+    .row {
+      grid-template-columns: repeat(1, 1fr); /* 1 card per row on small screens */
+    }
+  }
